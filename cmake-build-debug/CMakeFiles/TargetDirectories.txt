@@ -1,3 +1,0 @@
-Z:/Code/c++/raytracing iow/cmake-build-debug/CMakeFiles/raytracing_iow.dir
-Z:/Code/c++/raytracing iow/cmake-build-debug/CMakeFiles/edit_cache.dir
-Z:/Code/c++/raytracing iow/cmake-build-debug/CMakeFiles/rebuild_cache.dir
