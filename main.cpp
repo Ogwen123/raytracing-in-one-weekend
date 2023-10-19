@@ -25,8 +25,40 @@ void progress_bar(int remaining, int total) {
 }
 
 
+double hit_sphere(const point3& center, double radius, const ray& r) {
+    vec3 oc = r.origin() - center;
+    //double a = dot(r.direction(), r.direction());
+    //double b = 2.0 * dot(oc, r.direction());
+    //double c = dot(oc, oc) - pow(radius, 2);
+
+    //double discriminant = pow(b, 2) - 4*a*c;
+
+    double a = r.direction().length_squared(); // v.v = |v^2|
+    double half_b = dot(oc, r.direction());
+    double c = oc.length_squared() - pow(radius, 2);
+
+    auto discriminant = pow(half_b, 2) - a*c;
+
+    //return (discriminant < 0) ? -1.0 : (-b - sqrt(discriminant) / (2.0*a));
+    if (discriminant < 0) {
+        return -1.0;
+    } else {
+        return (-half_b - sqrt(discriminant) ) / a;
+    }
+}
+
 colour ray_colour(const ray& r) {
-    return colour(0, 0, 0);
+    double t = hit_sphere(point3(0, 0, -1), 0.5, r);
+
+    if (t > 0.0) {
+        vec3 N = unit_vector(r.at(t) - vec3(0,0,-1));
+        return 0.5*colour(N.x()+1, N.y()+1, N.z()+1);
+    }
+
+    vec3 unit_direction = unit_vector(r.direction());
+    double a = 0.5*(unit_direction.y() + 1.0);
+
+    return (1.0-a) * colour(1.0, 1.0, 1.0) + a * colour(0.5, 0.7, 1.0);
 }
 
 int main() {
@@ -63,22 +95,19 @@ int main() {
 
     for (int j = 0; j < image_height; ++j) {
         progress_bar((image_height-j), image_height);
-        std::clog.clear();
         for (int i = 0; i < image_width; ++i) {
             auto pixel_center = pixel00_location + (i * pixel_delta_u) + (j * pixel_delta_v);
             auto ray_direction = pixel_center - camera_center;
 
             ray r(camera_center, ray_direction);
-
             colour pixel_colour = ray_colour(r);
 
             write_colour(std::cout, pixel_colour);
-            //auto pixel_colour = colour(double(i)/(image_width-1), double(j)/(image_height-1), 0);
-            //write_colour(std::cout, pixel_colour);
         }
+        std::clog.clear();
     }
 
     std::clog << "\rDone.                 \n";
 }
 
-// upto just after listing 9 under subtitle "sending rays into the scene"
+// 6.3 An Abstraction for Hittable Objects

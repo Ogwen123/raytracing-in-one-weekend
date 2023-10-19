@@ -41,7 +41,7 @@ public:
         return *this *= 1/t;
     }
 
-    double length() const {
+    double length() const { // 3d pythag, d^2 = sqrt(a^2 + b^2 + c^2)
         return sqrt(length_squared());
     }
 
@@ -84,7 +84,7 @@ inline vec3 operator/(vec3 v, double t) {
     return (1/t) * v;
 }
 
-inline double dot(const vec3 &u, const vec3 &v) {
+inline double dot(const vec3 &u, const vec3 &v) { // dot product
     return u.e[0] * v.e[0]
            + u.e[1] * v.e[1]
            + u.e[2] * v.e[2];

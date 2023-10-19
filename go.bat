@@ -1,2 +1,2 @@
-call raytracing_iow.exe > image.ppm
+cd cmake-build-debug && call raytracing_iow.exe > image.ppm
 PAUSE
