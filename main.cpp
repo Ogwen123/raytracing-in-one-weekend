@@ -25,8 +25,8 @@ void progress_bar(int remaining, int total) {
 }
 
 
-double hit_sphere(const point3& center, double radius, const ray& r) {
-    vec3 oc = r.origin() - center;
+double hit_sphere(const point3& centre, double radius, const ray& r) {
+    vec3 oc = r.origin() - centre;
     //double a = dot(r.direction(), r.direction());
     //double b = 2.0 * dot(oc, r.direction());
     //double c = dot(oc, oc) - pow(radius, 2);
@@ -78,7 +78,7 @@ int main() {
     auto vp_width = vp_height * (static_cast<double>(image_width)/image_height);
 
     double focal_length = 1.0;
-    point3 camera_center = point3(0, 0, 0);
+    point3 camera_centre = point3(0, 0, 0);
 
     vec3 vp_u = vec3(vp_width, 0, 0);
     vec3 vp_v = vec3(0, -vp_height, 0); // the vp height is negative because the y increases as we go down the vp, which we don't want
@@ -86,7 +86,7 @@ int main() {
     vec3 pixel_delta_u = vp_u / image_width; // distance between horizontal pixels
     vec3 pixel_delta_v = vp_v / image_height; // distance between vertical pixels
 
-    vec3 vp_upper_left = camera_center - vec3(0, 0, focal_length) - vp_u/2 - vp_v/2;
+    vec3 vp_upper_left = camera_centre - vec3(0, 0, focal_length) - vp_u/2 - vp_v/2;
     vec3 pixel00_location = vp_upper_left + 0.5 * (pixel_delta_u + pixel_delta_v);
 
     // Render
@@ -96,10 +96,10 @@ int main() {
     for (int j = 0; j < image_height; ++j) {
         progress_bar((image_height-j), image_height);
         for (int i = 0; i < image_width; ++i) {
-            auto pixel_center = pixel00_location + (i * pixel_delta_u) + (j * pixel_delta_v);
-            auto ray_direction = pixel_center - camera_center;
+            auto pixel_centre = pixel00_location + (i * pixel_delta_u) + (j * pixel_delta_v);
+            auto ray_direction = pixel_centre - camera_centre;
 
-            ray r(camera_center, ray_direction);
+            ray r(camera_centre, ray_direction);
             colour pixel_colour = ray_colour(r);
 
             write_colour(std::cout, pixel_colour);
@@ -110,4 +110,4 @@ int main() {
     std::clog << "\rDone.                 \n";
 }
 
-// 6.3 An Abstraction for Hittable Objects
+// 6.5 An Abstraction for Hittable Objects
